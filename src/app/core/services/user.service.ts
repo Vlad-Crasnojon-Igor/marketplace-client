@@ -49,4 +49,8 @@ export class UserService {
         // We will parse it manually in the component if it's JSON.
         return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' });
     }
+    updateBio(userId: number, description: string): Observable<any> {
+        const headers = { 'Content-Type': 'application/json' };
+        return this.http.put(`${this.apiUrl.replace('/api/User', '/api/UserProfile')}/update-bio/${userId}`, JSON.stringify(description), { headers });
+    }
 }

@@ -1,6 +1,7 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth';
+import { UserService } from '../../core/services/user.service';
 
 interface Listing {
     id: number;
@@ -27,14 +28,65 @@ export class Profile {
         { id: 4, title: 'Tastatură Mecanică Custom', price: 400, bids: 2, timeLeft: '4h', seller: 'current_user' },
     ];
 
-    editPhoto() {
-        // In a real app, this would open a file picker or modal
-        window.alert('OPEN_MODAL: [EDIT_PHOTO_INTERFACE]');
+    // Photo editing methods removed
+
+    // Bio Editing
+    userService = inject(UserService);
+    isEditingBio = signal(false);
+    bioText = signal('');
+
+    wordCount = computed(() => {
+        const text = this.bioText() || '';
+        return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    });
+
+    // Initialize bio text from current user profile
+    constructor() {
+        // We use an effect or just simple assignment in constructor if signal is set
+        const user = this.currentUser();
+        if (user?.userProfile?.description) {
+            this.bioText.set(user.userProfile.description);
+        }
     }
 
-    deletePhoto() {
-        if (confirm('WARNING: DELETE_ASSET [PROFILE_PHOTO]?')) {
-            window.alert('ASSET_DELETED: [PROFILE_PHOTO]');
+    startEditBio() {
+        const user = this.currentUser();
+        this.bioText.set(user?.userProfile?.description || '');
+        this.isEditingBio.set(true);
+    }
+
+    cancelEditBio() {
+        this.isEditingBio.set(false);
+    }
+
+    saveBio(newBio: string) {
+        if (newBio.split(/\s+/).length > 150) {
+            alert('Description cannot exceed 150 words.'); // Simple validation
+            return;
+        }
+
+        const user = this.currentUser();
+        if (user && user.id) {
+            this.userService.updateBio(user.id, newBio).subscribe({
+                next: (res: any) => {
+                    // Update local state
+                    const updatedUser = { ...user };
+                    if (!updatedUser.userProfile) {
+                        updatedUser.userProfile = { upId: 0, userId: user.id || 0, pfp: '', description: '' };
+                    }
+                    updatedUser.userProfile.description = newBio;
+
+                    this.authService.currentUser.set(updatedUser);
+                    this.isEditingBio.set(false);
+                },
+                error: (err: any) => {
+                    console.error('Error updating bio:', err);
+                    if (err.error?.errors) {
+                        console.error('Validation Errors:', err.error.errors);
+                    }
+                    alert('Failed to update bio. Check console for details.');
+                }
+            });
         }
     }
 }

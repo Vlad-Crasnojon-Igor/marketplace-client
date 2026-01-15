@@ -6,15 +6,7 @@
                 <div class="avatar-placeholder">
                     {{ user.firstName.charAt(0) }}
                 </div>
-                <!-- Hover Menu -->
-                <div class="avatar-menu">
-                    <button class="menu-item" (click)="editPhoto()">
-                        <i class="fa-solid fa-pen"></i> Edit Photo
-                    </button>
-                    <button class="menu-item delete" (click)="deletePhoto()">
-                        <i class="fa-solid fa-trash"></i> Delete Photo
-                    </button>
-                </div>
+                <!-- Hover Menu Removed -->
             </div>
         </div>
         <div class="info-section">
@@ -22,6 +14,35 @@
             <span class="email">{{ user.email }}</span>
 
         </div>
+    </div>
+
+    <div class="bio-section">
+        <div class="bio-header">
+            <h2>Profile Description</h2>
+            @if (!isEditingBio()) {
+            <button class="edit-bio-btn" (click)="startEditBio()">
+                <i class="fa-solid fa-pen"></i> Edit
+            </button>
+            }
+        </div>
+
+        @if (isEditingBio()) {
+        <div class="bio-editor">
+            <textarea [value]="bioText()" (input)="bioText.set($any($event.target).value)" maxlength="1000"
+                placeholder="Write something about yourself... (max 150 words)"></textarea>
+            <div class="word-count">
+                {{ wordCount() }} words
+            </div>
+            <div class="bio-actions">
+                <button class="save-btn" (click)="saveBio(bioText())">Save</button>
+                <button class="cancel-btn" (click)="cancelEditBio()">Cancel</button>
+            </div>
+        </div>
+        } @else {
+        <p class="bio-text">
+            {{ currentUser()?.userProfile?.description || 'No description provided yet.' }}
+        </p>
+        }
     </div>
 
     <div class="listings-section">

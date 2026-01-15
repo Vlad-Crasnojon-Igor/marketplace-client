@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, inject, effect } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { UserService, User } from './user.service';
 
@@ -11,7 +11,28 @@ export class AuthService {
   private userService = inject(UserService);
 
   // Signal to hold the current user state
-  currentUser = signal<User | null>(null);
+  currentUser = signal<User | null>(this.getUserFromStorage());
+
+  constructor() {
+    effect(() => {
+      const user = this.currentUser();
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('currentUser');
+      }
+    });
+  }
+
+  private getUserFromStorage(): User | null {
+    try {
+      const userStr = localStorage.getItem('currentUser');
+      return userStr ? JSON.parse(userStr) : null;
+    } catch (e) {
+      console.error('Error reading user from storage', e);
+      return null;
+    }
+  }
 
   login(email: string, password: string): Observable<boolean> {
     return this.userService.getUsers().pipe(
