@@ -46,31 +46,37 @@
     </div>
 
     <div class="listings-section">
-        <h2>Your Active Listings</h2>
+        <h2>Your Active Listings ({{ listings().length }})</h2>
 
-        <div class="products-grid">
-            @for (item of myListings; track item.id) {
-            <div class="product-card">
-                <div class="img-placeholder">
-                    [ ITEM_IMG ]
-                </div>
-                <div class="card-details">
-                    <h3 class="product-title">{{ item.title }}</h3>
-                    <div class="info-row">
-                        <span class="label">Price:</span>
-                        <span class="value">{{ item.price }} RON</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Bids:</span>
-                        <span class="value">{{ item.bids }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Time Left:</span>
-                        <span class="value highlight">{{ item.timeLeft }}</span>
-                    </div>
-                </div>
+        <div class="listings-list">
+            @for (item of listings(); track item.id) {
+            <div class="listing-item"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #333;">
+                <span class="listing-title" style="font-size: 1.1em;">{{ item.title }}</span>
+                <button class="delete-btn" (click)="deleteListing(item.id!)"
+                    style="background: red; color: white; padding: 5px 10px; border: none; cursor: pointer;">[ DELETE
+                    ]</button>
             </div>
             }
+        </div>
+    </div>
+    }
+
+    @if (showDeleteConfirm()) {
+    <div class="terminal-modal-overlay">
+        <div class="terminal-modal">
+            <div class="modal-header">
+                WARNING: DELETION PROTOCOL INITIATED
+            </div>
+            <div class="modal-content">
+                <p>> Are you sure you want to purge listing #{{ listingToDelete() }}?</p>
+                <p>> This action cannot be undone.</p>
+                <p class="blinking-cursor">> _</p>
+            </div>
+            <div class="modal-actions">
+                <button class="terminal-btn confirm" (click)="confirmDelete()">[ CONFIRM DELETION ]</button>
+                <button class="terminal-btn cancel" (click)="cancelDelete()">[ ABORT ]</button>
+            </div>
         </div>
     </div>
     }

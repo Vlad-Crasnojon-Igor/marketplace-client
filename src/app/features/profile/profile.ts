@@ -3,14 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth';
 import { UserService } from '../../core/services/user.service';
 
-interface Listing {
-    id: number;
-    title: string;
-    price: number;
-    bids: number;
-    timeLeft: string;
-    seller: string;
-}
+import { AnnouncementService } from '../../core/services/announcement.service';
+import { Announcement } from '../../core/models/announcement.model';
 
 @Component({
     selector: 'app-profile',
@@ -20,15 +14,14 @@ interface Listing {
 })
 export class Profile {
     private authService = inject(AuthService);
+    private announcementService = inject(AnnouncementService);
     currentUser = this.authService.currentUser;
 
-    // Mock data for user's listings
-    myListings: Listing[] = [
-        { id: 1, title: 'Laptop ThinkPad T480 - Refurbished', price: 1200, bids: 5, timeLeft: '2h 15m', seller: 'current_user' },
-        { id: 4, title: 'Tastatură Mecanică Custom', price: 400, bids: 2, timeLeft: '4h', seller: 'current_user' },
-    ];
+    listings = signal<Announcement[]>([]);
 
-    // Photo editing methods removed
+    // Delete Modal State
+    showDeleteConfirm = signal(false);
+    listingToDelete = signal<number | null>(null);
 
     // Bio Editing
     userService = inject(UserService);
@@ -47,6 +40,48 @@ export class Profile {
         if (user?.userProfile?.description) {
             this.bioText.set(user.userProfile.description);
         }
+
+        if (user && user.id) {
+            this.loadListings(user.id);
+        }
+    }
+
+    loadListings(userId: number) {
+        this.announcementService.getAnnouncementsByUserId(userId).subscribe({
+            next: (data) => this.listings.set(data),
+            error: (err) => console.error('Failed to load listings', err)
+        });
+    }
+
+    deleteListing(id: number) {
+        this.listingToDelete.set(id);
+        this.showDeleteConfirm.set(true);
+    }
+
+    confirmDelete() {
+        const id = this.listingToDelete();
+        if (id) {
+            this.announcementService.deleteAnnouncement(id).subscribe({
+                next: () => {
+                    this.listings.update(current => current.filter(item => item.id !== id));
+                    this.closeDeleteModal();
+                },
+                error: (err) => {
+                    console.error('Failed to delete listing', err);
+                    alert('Failed to delete listing');
+                    this.closeDeleteModal();
+                }
+            });
+        }
+    }
+
+    cancelDelete() {
+        this.closeDeleteModal();
+    }
+
+    private closeDeleteModal() {
+        this.showDeleteConfirm.set(false);
+        this.listingToDelete.set(null);
     }
 
     startEditBio() {

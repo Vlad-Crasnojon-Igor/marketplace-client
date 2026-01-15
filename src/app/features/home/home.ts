@@ -6,6 +6,11 @@ import { AnnouncementService } from '../../core/services/announcement.service';
 import { Announcement } from '../../core/models/announcement.model';
 import { CategoryService } from '../../core/services/category.service';
 import { Category } from '../../core/models/category.model';
+import { forkJoin, map } from 'rxjs';
+
+interface CategoryWithCount extends Category {
+  count: number;
+}
 
 @Component({
   selector: 'app-home',
@@ -23,19 +28,42 @@ export class Home implements OnInit {
   selectedProduct = signal<Announcement | null>(null);
 
   listings = signal<Announcement[]>([]);
-  categories = signal<Category[]>([]);
+  categoriesWithCounts = signal<CategoryWithCount[]>([]);
 
   ngOnInit() {
     this.announcementService.getAnnouncements().subscribe((data) => {
       this.listings.set(data);
     });
-    this.categoryService.getCategories().subscribe((data) => {
-      this.categories.set(data);
+
+    this.categoryService.getCategories().subscribe((cats) => {
+      // Create an array of observables to fetch counts for each category
+      const requests = cats.map(cat =>
+        this.announcementService.getAnnouncementsByCategoryId(cat.categoryId).pipe(
+          map(items => ({ ...cat, count: items.length }))
+        )
+      );
+
+      // Execute all requests in parallel
+      forkJoin(requests).subscribe(results => {
+        this.categoriesWithCounts.set(results);
+      });
     });
   }
 
   toggleFilter() {
     this.isFilterOpen = !this.isFilterOpen;
+  }
+
+  selectCategory(categoryId: number) {
+    this.announcementService.getAnnouncementsByCategoryId(categoryId).subscribe(data => {
+      this.listings.set(data);
+    });
+  }
+
+  resetCategory() {
+    this.announcementService.getAnnouncements().subscribe(data => {
+      this.listings.set(data);
+    });
   }
 
   openProduct(product: Announcement) {

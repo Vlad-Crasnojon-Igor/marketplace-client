@@ -18,14 +18,11 @@
         <!-- Category -->
         <div class="form-group">
             <label for="category">Category</label>
-            <select id="category" formControlName="category">
-                <option value="" disabled selected>Select a category</option>
-                <option value="electronics">Electronics</option>
-                <option value="auto">Auto & Moto</option>
-                <option value="home">Home & Garden</option>
-                <option value="sport">Sport</option>
-                <option value="fashion">Fashion</option>
-                <option value="other">Other</option>
+            <select id="category" formControlName="categoryId">
+                <option [ngValue]="null" disabled selected>Select a category</option>
+                @for (cat of categories(); track cat.categoryId) {
+                <option [value]="cat.categoryId">{{ cat.name }}</option>
+                }
             </select>
         </div>
 
@@ -37,8 +34,8 @@
             </div>
 
             <div class="form-group">
-                <label for="photo">Photo</label>
-                <input type="file" id="photo" (change)="onFileSelected($event)" accept="image/*">
+                <label for="imageUrl">Image URL</label>
+                <input type="text" id="imageUrl" formControlName="imageUrl" placeholder="https://example.com/image.jpg">
             </div>
         </div>
 

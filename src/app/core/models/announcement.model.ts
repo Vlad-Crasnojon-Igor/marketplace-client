@@ -6,4 +6,8 @@ export interface Announcement {
     categoryId: number;
     userId: number;
     imageUrl: string;
+    categoryName?: string;
+    sellerName?: string;
+    sellerId?: number;
+    sellerAvatar?: string;
 }

@@ -17,8 +17,10 @@
     <aside class="sidebar">
         <div class="section-title"><i class="fa-solid"></i> CATEGORIES</div>
         <ul class="category-list">
-            @for (category of categories(); track category.categoryId) {
-            <li>> {{ category.name }}</li>
+            <li (click)="resetCategory()" style="cursor: pointer;">> [ ALL CATEGORIES ]</li>
+            @for (category of categoriesWithCounts(); track category.categoryId) {
+            <li (click)="selectCategory(category.categoryId)" style="cursor: pointer;">> {{ category.name }} ({{
+                category.count }})</li>
             }
         </ul>
     </aside>
@@ -88,10 +90,11 @@
         <div class="section contact-info">
             <div class="section-header">-- METADATA --</div>
             <div class="data-row">
-                <span class="label">USER ID:</span> <span>{{ product.userId }}</span>
+                <span class="label">SELLER:</span> <span>{{ product.sellerName || 'User #' + product.userId }}</span>
             </div>
             <div class="data-row">
-                <span class="label">CATEGORY ID:</span> <span>{{ product.categoryId }}</span>
+                <span class="label">CATEGORY:</span> <span>{{ product.categoryName || 'Cat #' + product.categoryId
+                    }}</span>
             </div>
         </div>
     </div>
