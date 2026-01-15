@@ -1,0 +1,68 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+}
+
+/* Header & Toolbar */
+.header,
+.toolbar,
+.footer {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-surface);
+}
+
+.header {
+    background-color: var(--bg-surface-alt);
+}
+
+.logo-btn {
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.5px;
+    color: var(--accent-primary);
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: var(--hover-bg);
+        text-decoration: none;
+    }
+
+    i {
+        font-size: 1.1rem;
+    }
+}
+
+.search-box {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-grow: 1;
+    max-width: 600px;
+    margin: 0 2rem;
+
+    input {
+        width: 100%;
+        background-color: var(--bg-base);
+        border-color: var(--border-color);
+
+        &:focus {
+            background-color: var(--bg-surface);
+        }
+    }
+}

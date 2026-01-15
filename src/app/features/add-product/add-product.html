@@ -1,0 +1,50 @@
+<div class="add-product-container">
+    <h1>Create New Listing</h1>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <!-- Headliner -->
+        <div class="form-group">
+            <label for="title">Headliner (Title)</label>
+            <input type="text" id="title" formControlName="title" placeholder="e.g. iPhone 13 Pro Max - Like New">
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description"
+                placeholder="Describe the item condition, specs, etc."></textarea>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" formControlName="category">
+                <option value="" disabled selected>Select a category</option>
+                <option value="electronics">Electronics</option>
+                <option value="auto">Auto & Moto</option>
+                <option value="home">Home & Garden</option>
+                <option value="sport">Sport</option>
+                <option value="fashion">Fashion</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <!-- Price & Photo Row -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="price">Price (RON)</label>
+                <input type="number" id="price" formControlName="price" placeholder="0.00" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="photo">Photo</label>
+                <input type="file" id="photo" (change)="onFileSelected($event)" accept="image/*">
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+            <button type="submit" class="submit-btn" [disabled]="productForm.invalid">Publish Product</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,109 @@
+/* Container for the form */
+.add-product-container {
+    padding: 3rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+form {
+    background: var(--bg-surface);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 0.8rem;
+            background: var(--bg-base);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: inherit;
+
+            &:focus {
+                outline: 2px solid var(--accent-primary);
+                border-color: transparent;
+            }
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        input[type="file"] {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .actions {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+
+        button {
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+
+            &.cancel-btn {
+                background: transparent;
+                color: var(--text-secondary);
+                border: 1px solid var(--border-color);
+
+                &:hover {
+                    background: var(--bg-base);
+                    color: var(--text-primary);
+                }
+            }
+
+            &.submit-btn {
+                background: var(--accent-primary);
+                color: var(--bg-base);
+                /* dark text on accent (cyan) */
+
+                &:hover {
+                    opacity: 0.9;
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}

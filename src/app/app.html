@@ -1,0 +1,19 @@
+<div class="container">
+    <header class="header">
+        <a [routerLink]="['/']" class="logo-btn">
+            <i class="fa-solid fa-house"></i> MARKETPLACE
+        </a>
+        <div class="user-status">
+            @if (currentUser(); as user) {
+            [ <a [routerLink]="['/profile']">{{ user.firstName }}</a> ] :: <a href="#" (click)="logout()"><i
+                    class="fa-solid"></i> LOGOUT</a>
+            } @else {
+            [ GUEST_USER ] :: <a [routerLink]="['/signup']">SIGN UP</a> | <a [routerLink]="['/login']">SIGN IN</a>
+            }
+        </div>
+    </header>
+
+    <router-outlet></router-outlet>
+
+
+</div>

@@ -1,0 +1,96 @@
+<div class="tui-panel toolbar-panel">
+    <div class="tui-legend">Search & Actions</div>
+    <div class="toolbar-content">
+        <div class="search-box">
+            <span class="prompt">>></span>
+            <input type="text" [(ngModel)]="searchQuery" placeholder="query_database..." />
+            <button class="go-btn">[EXECUTE]</button>
+        </div>
+        <div class="actions">
+            <button class="add-btn" [routerLink]="['/add-product']">[+] ADD ENTITY</button>
+        </div>
+    </div>
+</div>
+
+<main class="main-grid">
+
+    <aside class="sidebar">
+        <div class="section-title"><i class="fa-solid"></i> CATEGORIES</div>
+        <ul class="category-list">
+            <li>> Electronics (120)</li>
+            <li>> Automotive (45)</li>
+            <li>> Home & Garden (80)</li>
+            <li>> Sports (30)</li>
+            <li>> Miscellaneous (15)</li>
+        </ul>
+    </aside>
+
+    <section class="content">
+        <div class="listings-header">
+            Results: {{ listings.length }} items found.
+        </div>
+        <div class="products-grid">
+            @for (item of listings; track item.id) {
+            <div class="product-card">
+                <div class="img-placeholder">
+                    [ IMG_MISSING ]
+                </div>
+                <div class="card-details">
+                    <h3 class="product-title">{{ item.title }}</h3>
+                    <p class="product-description">{{ item.description }}</p>
+                    <div class="info-row">
+                        <span class="label">Price:</span>
+                        <span class="value highlight">{{ item.price }} RON</span>
+                    </div>
+                    <button class="bid-btn" (click)="openProduct(item)">View Listing</button>
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+
+</main>
+
+@if (selectedProduct) {
+<div class="product-sidebar-overlay" (click)="closeProduct()"></div>
+<aside class="product-sidebar tui-panel">
+    <div class="tui-legend">Entity_Details: #{{selectedProduct.id}}</div>
+    <div class="sidebar-header">
+        <button class="close-btn" (click)="closeProduct()">[X]</button>
+    </div>
+
+    <div class="product-full-details">
+        <div class="ascii-art-placeholder">
+            <pre>
+   +------------------+
+   |   IMAGE DATA     |
+   |   [MISSING]      |
+   +------------------+
+           </pre>
+        </div>
+
+        <h2 class="full-title">{{ selectedProduct.title }}</h2>
+        <div class="data-row">
+            <span class="label">PRICE:</span> <span class="value">{{ selectedProduct.price }} RON</span>
+        </div>
+
+        <div class="section">
+            <div class="section-header">-- DESCRIPTION --</div>
+            <p>{{ selectedProduct.description }}</p>
+        </div>
+
+        <div class="section contact-info">
+            <div class="section-header">-- METADATA --</div>
+            <div class="data-row">
+                <span class="label">SELLER:</span> <span>{{ selectedProduct.seller }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">RATING:</span> <span>{{ selectedProduct.rating }}/5.0</span>
+            </div>
+            <div class="data-row phone">
+                <span class="label">CONTACT:</span> <span>{{ selectedProduct.phone }}</span>
+            </div>
+        </div>
+    </div>
+</aside>
+}

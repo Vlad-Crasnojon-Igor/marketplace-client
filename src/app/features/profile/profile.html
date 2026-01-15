@@ -1,0 +1,59 @@
+<div class="profile-container">
+    @if (currentUser(); as user) {
+    <div class="profile-header">
+        <div class="avatar-section">
+            <div class="avatar-container">
+                <div class="avatar-placeholder">
+                    {{ user.firstName.charAt(0) }}
+                </div>
+                <!-- Hover Menu -->
+                <div class="avatar-menu">
+                    <button class="menu-item" (click)="editPhoto()">
+                        <i class="fa-solid fa-pen"></i> Edit Photo
+                    </button>
+                    <button class="menu-item delete" (click)="deletePhoto()">
+                        <i class="fa-solid fa-trash"></i> Delete Photo
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="info-section">
+            <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+            <span class="email">{{ user.email }}</span>
+            <div class="rating-badge">
+                <span>★ 4.8</span>
+                <span>(Seller Rating)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="listings-section">
+        <h2>Your Active Listings</h2>
+
+        <div class="products-grid">
+            @for (item of myListings; track item.id) {
+            <div class="product-card">
+                <div class="img-placeholder">
+                    [ ITEM_IMG ]
+                </div>
+                <div class="card-details">
+                    <h3 class="product-title">{{ item.title }}</h3>
+                    <div class="info-row">
+                        <span class="label">Price:</span>
+                        <span class="value">{{ item.price }} RON</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Bids:</span>
+                        <span class="value">{{ item.bids }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Time Left:</span>
+                        <span class="value highlight">{{ item.timeLeft }}</span>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    }
+</div>
