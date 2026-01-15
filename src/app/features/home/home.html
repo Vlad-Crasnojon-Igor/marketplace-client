@@ -17,23 +17,25 @@
     <aside class="sidebar">
         <div class="section-title"><i class="fa-solid"></i> CATEGORIES</div>
         <ul class="category-list">
-            <li>> Electronics (120)</li>
-            <li>> Automotive (45)</li>
-            <li>> Home & Garden (80)</li>
-            <li>> Sports (30)</li>
-            <li>> Miscellaneous (15)</li>
+            @for (category of categories(); track category.categoryId) {
+            <li>> {{ category.name }}</li>
+            }
         </ul>
     </aside>
 
     <section class="content">
         <div class="listings-header">
-            Results: {{ listings.length }} items found.
+            Results: {{ listings().length }} items found.
         </div>
         <div class="products-grid">
-            @for (item of listings; track item.id) {
+            @for (item of listings(); track item.id) {
             <div class="product-card">
                 <div class="img-placeholder">
+                    @if (item.imageUrl) {
+                    <img [src]="item.imageUrl" [alt]="item.title" style="width: 100%; height: 100%; object-fit: cover;">
+                    } @else {
                     [ IMG_MISSING ]
+                    }
                 </div>
                 <div class="card-details">
                     <h3 class="product-title">{{ item.title }}</h3>
@@ -51,44 +53,45 @@
 
 </main>
 
-@if (selectedProduct) {
+@if (selectedProduct(); as product) {
 <div class="product-sidebar-overlay" (click)="closeProduct()"></div>
 <aside class="product-sidebar tui-panel">
-    <div class="tui-legend">Entity_Details: #{{selectedProduct.id}}</div>
+    <div class="tui-legend">Entity_Details: #{{product.id}}</div>
     <div class="sidebar-header">
         <button class="close-btn" (click)="closeProduct()">[X]</button>
     </div>
 
     <div class="product-full-details">
         <div class="ascii-art-placeholder">
+            @if (product.imageUrl) {
+            <img [src]="product.imageUrl" [alt]="product.title" style="width: 100%; object-fit: contain;">
+            } @else {
             <pre>
    +------------------+
    |   IMAGE DATA     |
    |   [MISSING]      |
    +------------------+
-           </pre>
+                </pre>
+            }
         </div>
 
-        <h2 class="full-title">{{ selectedProduct.title }}</h2>
+        <h2 class="full-title">{{ product.title }}</h2>
         <div class="data-row">
-            <span class="label">PRICE:</span> <span class="value">{{ selectedProduct.price }} RON</span>
+            <span class="label">PRICE:</span> <span class="value">{{ product.price }} RON</span>
         </div>
 
         <div class="section">
             <div class="section-header">-- DESCRIPTION --</div>
-            <p>{{ selectedProduct.description }}</p>
+            <p>{{ product.description }}</p>
         </div>
 
         <div class="section contact-info">
             <div class="section-header">-- METADATA --</div>
             <div class="data-row">
-                <span class="label">SELLER:</span> <span>{{ selectedProduct.seller }}</span>
+                <span class="label">USER ID:</span> <span>{{ product.userId }}</span>
             </div>
             <div class="data-row">
-                <span class="label">RATING:</span> <span>{{ selectedProduct.rating }}/5.0</span>
-            </div>
-            <div class="data-row phone">
-                <span class="label">CONTACT:</span> <span>{{ selectedProduct.phone }}</span>
+                <span class="label">CATEGORY ID:</span> <span>{{ product.categoryId }}</span>
             </div>
         </div>
     </div>
