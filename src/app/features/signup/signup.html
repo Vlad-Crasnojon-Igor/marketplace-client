@@ -28,7 +28,10 @@
                 <label for="email">Email Address</label>
                 <input type="email" id="email" formControlName="email" placeholder="your@email.com"
                     [class.has-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-                @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                @if (loginForm.get('email')?.hasError('conflict')) {
+                <span class="error-msg terminal-error">> ERROR: {{ loginForm.get('email')?.getError('conflict')
+                    }}</span>
+                } @else if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
                 <span class="error-msg">Please enter a valid email address</span>
                 }
             </div>

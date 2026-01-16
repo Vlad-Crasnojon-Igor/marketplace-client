@@ -21,6 +21,7 @@ export class AddProduct {
     private authService = inject(AuthService);
 
     categories = signal<Category[]>([]);
+    selectedFileName = signal<string>('');
 
     productForm: FormGroup = this.fb.group({
         title: ['', [Validators.required, Validators.minLength(5)]],
@@ -37,6 +38,15 @@ export class AddProduct {
         });
     }
 
+    onFileSelected(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+            this.selectedFileName.set(file.name);
+            // We store the file object to upload it on submit
+            this.productForm.patchValue({ imageUrl: file });
+        }
+    }
+
     onSubmit() {
         if (this.productForm.valid) {
             const currentUser = this.authService.currentUser();
@@ -45,27 +55,46 @@ export class AddProduct {
                 return;
             }
 
-            const payload = {
-                ...this.productForm.value,
-                userId: currentUser.id,
-                // Ensure numbers are numbers
-                price: Number(this.productForm.value.price),
-                categoryId: Number(this.productForm.value.categoryId),
-                imageUrl: this.productForm.value.imageUrl || ''
-            };
+            const formValue = this.productForm.value;
+            const file = formValue.imageUrl instanceof File ? formValue.imageUrl : null;
 
-            this.announcementService.createAnnouncement(payload).subscribe({
-                next: () => {
-                    this.router.navigate(['/']);
-                },
-                error: (err) => {
-                    console.error('Error creating announcement', err);
-                    alert('Failed to create announcement.');
-                }
+            const createPayload = (imageUrl: string) => ({
+                title: formValue.title,
+                description: formValue.description,
+                categoryId: Number(formValue.categoryId),
+                price: Number(formValue.price),
+                userId: currentUser.id,
+                imageUrl: imageUrl
             });
+
+            if (file) {
+                this.announcementService.uploadImage(file).subscribe({
+                    next: (res) => {
+                        this.createAnnouncement(createPayload(res.url));
+                    },
+                    error: (err) => {
+                        console.error('Image upload failed', err);
+                        alert('Failed to upload image. Please try again.');
+                    }
+                });
+            } else {
+                this.createAnnouncement(createPayload(''));
+            }
         } else {
             this.productForm.markAllAsTouched();
         }
+    }
+
+    private createAnnouncement(payload: any) {
+        this.announcementService.createAnnouncement(payload).subscribe({
+            next: () => {
+                this.router.navigate(['/']);
+            },
+            error: (err) => {
+                console.error('Error creating announcement', err);
+                alert('Failed to create announcement.');
+            }
+        });
     }
 
     onCancel() {

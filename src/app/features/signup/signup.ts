@@ -47,8 +47,15 @@ export class Signup {
           this.authService.currentUser.set(createdUser);
           this.router.navigate(['/']);
         },
-        error: () => {
-          this.errorMessage = 'Sign up failed. Please try again.';
+        error: (err) => {
+          if (err.status === 409 && err.error?.message) {
+            const emailControl = this.loginForm.get('email');
+            emailControl?.setValue('');
+            emailControl?.setErrors({ conflict: err.error.message });
+            emailControl?.markAsTouched();
+          } else {
+            this.errorMessage = 'Sign up failed. Please try again.';
+          }
           this.isLoading = false;
         },
         complete: () => {

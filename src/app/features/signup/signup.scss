@@ -65,6 +65,16 @@
         color: var(--accent-danger);
         font-size: 0.8rem;
     }
+
+    .terminal-error {
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: bold;
+        background: rgba(255, 0, 0, 0.1);
+        padding: 0.2rem 0.5rem;
+        display: block;
+        margin-top: 0.2rem;
+        border-left: 2px solid var(--accent-danger);
+    }
 }
 
 button[type="submit"] {

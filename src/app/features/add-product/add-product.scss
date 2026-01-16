@@ -53,8 +53,34 @@ form {
         }
 
         input[type="file"] {
-            padding: 0.5rem 0;
-            color: var(--text-secondary);
+            display: none;
+        }
+
+        .file-upload-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .file-btn {
+                background: transparent;
+                border: 1px solid var(--accent-primary);
+                color: var(--accent-primary);
+                font-size: 0.9rem;
+                padding: 0.6rem 0rem;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                &:hover {
+                    background: var(--accent-primary);
+                    color: var(--bg-surface);
+                }
+            }
+
+            .file-name {
+                color: var(--text-muted);
+                font-family: monospace;
+            }
         }
     }
 

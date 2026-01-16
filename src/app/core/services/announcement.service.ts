@@ -35,4 +35,10 @@ export class AnnouncementService {
     deleteAnnouncement(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/${id}`);
     }
+
+    uploadImage(file: File): Observable<{ url: string }> {
+        const formData = new FormData();
+        formData.append('file', file);
+        return this.http.post<{ url: string }>(`${this.apiUrl}/upload`, formData);
+    }
 }
