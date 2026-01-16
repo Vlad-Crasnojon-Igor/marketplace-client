@@ -53,4 +53,8 @@ export class UserService {
         const headers = { 'Content-Type': 'application/json' };
         return this.http.put(`${this.apiUrl.replace('/api/User', '/api/UserProfile')}/update-bio/${userId}`, JSON.stringify(description), { headers });
     }
+
+    deleteUser(id: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/${id}`);
+    }
 }

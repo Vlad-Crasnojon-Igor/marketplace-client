@@ -66,6 +66,22 @@ export class Home implements OnInit {
     });
   }
 
+  executeSearch() {
+    if (!this.searchQuery.trim()) {
+      this.resetCategory();
+      return;
+    }
+
+    this.announcementService.searchAnnouncements(this.searchQuery).subscribe(data => {
+      this.listings.set(data);
+    });
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    this.resetCategory();
+  }
+
   openProduct(product: Announcement) {
     this.selectedProduct.set(product);
   }

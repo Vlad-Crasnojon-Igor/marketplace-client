@@ -28,6 +28,10 @@ export class AnnouncementService {
         );
     }
 
+    searchAnnouncements(query: string): Observable<Announcement[]> {
+        return this.http.get<Announcement[]>(`${this.apiUrl}/${query}`);
+    }
+
     deleteAnnouncement(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/${id}`);
     }

@@ -20,7 +20,7 @@
     --border-dim: #555555;
 
     /* Accents - "Terminal Colors" */
-    --accent-primary: #00ff00;
+    --accent-primary: #33c90a;
     /* Terminal Green (or use Cyan/Orange based on pref) */
     --accent-secondary: #00ffff;
     /* Cyan */
@@ -31,7 +31,7 @@
     --accent-danger: #ff0000;
     /* Red */
 
-    --hover-bg: #FFFFFF;
+    --hover-bg: #4b4b4b51;
     /* Invert for hover */
     --hover-text: #000000;
 
@@ -41,6 +41,7 @@
 
 * {
     box-sizing: border-box;
+    border-radius: 0 !important;
 }
 
 body {

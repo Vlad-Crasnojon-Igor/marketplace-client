@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth';
 import { UserService } from '../../core/services/user.service';
@@ -15,6 +16,7 @@ import { Announcement } from '../../core/models/announcement.model';
 export class Profile {
     private authService = inject(AuthService);
     private announcementService = inject(AnnouncementService);
+    private router = inject(Router);
     currentUser = this.authService.currentUser;
 
     listings = signal<Announcement[]>([]);
@@ -22,6 +24,9 @@ export class Profile {
     // Delete Modal State
     showDeleteConfirm = signal(false);
     listingToDelete = signal<number | null>(null);
+
+    // Profile Delete State
+    showDeleteProfileConfirm = signal(false);
 
     // Bio Editing
     userService = inject(UserService);
@@ -120,6 +125,32 @@ export class Profile {
                         console.error('Validation Errors:', err.error.errors);
                     }
                     alert('Failed to update bio. Check console for details.');
+                }
+            });
+        }
+    }
+
+    deleteProfile() {
+        this.showDeleteProfileConfirm.set(true);
+    }
+
+    cancelDeleteProfile() {
+        this.showDeleteProfileConfirm.set(false);
+    }
+
+    confirmDeleteProfile() {
+        const user = this.currentUser();
+        if (user && user.id) {
+            this.userService.deleteUser(user.id).subscribe({
+                next: () => {
+                    this.authService.logout();
+                    this.router.navigate(['/login']);
+                    this.showDeleteProfileConfirm.set(false);
+                },
+                error: (err) => {
+                    console.error('Failed to delete user profile', err);
+                    alert('Failed to delete profile');
+                    this.showDeleteProfileConfirm.set(false);
                 }
             });
         }

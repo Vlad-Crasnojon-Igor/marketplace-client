@@ -16,7 +16,6 @@ form {
     background: var(--bg-surface);
     padding: 2rem;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -39,7 +38,6 @@ form {
             padding: 0.8rem;
             background: var(--bg-base);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
             color: var(--text-primary);
             font-family: inherit;
 
@@ -74,7 +72,6 @@ form {
 
         button {
             padding: 0.8rem 2rem;
-            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
             border: none;

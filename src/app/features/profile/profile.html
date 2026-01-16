@@ -12,6 +12,9 @@
         <div class="info-section">
             <h1>{{ user.firstName }} {{ user.lastName }}</h1>
             <span class="email">{{ user.email }}</span>
+            <button class="delete-profile-btn" (click)="deleteProfile()"
+                style="background: red; color: white; padding: 5px 10px; border: none; cursor: pointer; margin-top: 10px; font-family: monospace;">[
+                DELETE ACCOUNT ]</button>
 
         </div>
     </div>
@@ -76,6 +79,25 @@
             <div class="modal-actions">
                 <button class="terminal-btn confirm" (click)="confirmDelete()">[ CONFIRM DELETION ]</button>
                 <button class="terminal-btn cancel" (click)="cancelDelete()">[ ABORT ]</button>
+            </div>
+        </div>
+    </div>
+    }
+
+    @if (showDeleteProfileConfirm()) {
+    <div class="terminal-modal-overlay">
+        <div class="terminal-modal">
+            <div class="modal-header">
+                WARNING: ACCOUNT DELETION PROTOCOL
+            </div>
+            <div class="modal-content">
+                <p>> Are you sure you want to purge your entire account?</p>
+                <p>> This action cannot be undone. All data will be lost.</p>
+                <p class="blinking-cursor">> _</p>
+            </div>
+            <div class="modal-actions">
+                <button class="terminal-btn confirm" (click)="confirmDeleteProfile()">[ CONFIRM DELETION ]</button>
+                <button class="terminal-btn cancel" (click)="cancelDeleteProfile()">[ ABORT ]</button>
             </div>
         </div>
     </div>

@@ -47,6 +47,34 @@
             outline: none;
         }
     }
+
+    .go-btn,
+    .clear-btn {
+        background: transparent;
+        border: 1px solid var(--accent-primary);
+        color: var(--accent-primary);
+        padding: 0.2rem 0.5rem;
+        cursor: pointer;
+        font-family: monospace;
+        font-weight: bold;
+        transition: all 0.2s;
+        white-space: nowrap;
+
+        &:hover {
+            background: var(--accent-primary);
+            color: var(--bg-surface);
+        }
+    }
+
+    .clear-btn {
+        border-color: var(--text-muted);
+        color: var(--text-muted);
+
+        &:hover {
+            background: var(--text-muted);
+            color: var(--bg-base);
+        }
+    }
 }
 
 /* Sidebar */

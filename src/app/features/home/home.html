@@ -3,8 +3,10 @@
     <div class="toolbar-content">
         <div class="search-box">
             <span class="prompt">>></span>
-            <input type="text" [(ngModel)]="searchQuery" placeholder="query_database..." />
-            <button class="go-btn">[EXECUTE]</button>
+            <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="executeSearch()"
+                placeholder="query_database..." />
+            <button class="go-btn" (click)="executeSearch()">[EXECUTE]</button>
+            <button class="clear-btn" (click)="clearSearch()">[CLR]</button>
         </div>
         <div class="actions">
             <button class="add-btn" [routerLink]="['/add-product']">[+] ADD ENTITY</button>

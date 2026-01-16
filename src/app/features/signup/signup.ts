@@ -60,8 +60,5 @@ export class Signup {
     }
   }
 
-  onForgotPassword(event: Event) {
-    event.preventDefault();
-    alert('Funcționalitate indisponibilă momentan.');
-  }
+
 }
