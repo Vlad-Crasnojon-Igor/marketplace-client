@@ -10,4 +10,5 @@ export interface Announcement {
     sellerName?: string;
     sellerId?: number;
     sellerAvatar?: string;
+    sellerPhone?: string;
 }

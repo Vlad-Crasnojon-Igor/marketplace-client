@@ -9,7 +9,9 @@
             <button class="clear-btn" (click)="clearSearch()">[CLR]</button>
         </div>
         <div class="actions">
+            @if (currentUser()) {
             <button class="add-btn" [routerLink]="['/add-product']">[+] ADD ENTITY</button>
+            }
         </div>
     </div>
 </div>
@@ -97,6 +99,16 @@
             <div class="data-row">
                 <span class="label">CATEGORY:</span> <span>{{ product.categoryName || 'Cat #' + product.categoryId
                     }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">CONTACT:</span>
+                @if (currentUser()) {
+                <span class="value highlight">{{ product.sellerPhone || 'N/A' }}</span>
+                } @else {
+                <span class="value dimmed" style="font-style: italic; cursor: not-allowed;" title="Login to view">[
+                    HIDDEN
+                    ]</span>
+                }
             </div>
         </div>
     </div>

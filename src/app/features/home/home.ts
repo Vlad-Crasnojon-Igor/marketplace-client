@@ -6,6 +6,7 @@ import { AnnouncementService } from '../../core/services/announcement.service';
 import { Announcement } from '../../core/models/announcement.model';
 import { CategoryService } from '../../core/services/category.service';
 import { Category } from '../../core/models/category.model';
+import { AuthService } from '../../core/services/auth';
 import { forkJoin, map } from 'rxjs';
 
 interface CategoryWithCount extends Category {
@@ -21,6 +22,9 @@ interface CategoryWithCount extends Category {
 export class Home implements OnInit {
   private announcementService = inject(AnnouncementService);
   private categoryService = inject(CategoryService);
+  private authService = inject(AuthService);
+
+  currentUser = this.authService.currentUser;
 
   searchQuery: string = '';
   isFilterOpen = false;
