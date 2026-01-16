@@ -5,9 +5,8 @@ import { Router } from '@angular/router';
 import { AnnouncementService } from '../../core/services/announcement.service';
 import { CategoryService } from '../../core/services/category.service';
 import { AuthService } from '../../core/services/auth';
-import { AchievementService } from '../../core/services/achievement.service';
 import { Category } from '../../core/models/category.model';
-import { Announcement } from '../../core/models/announcement.model';
+import { AchievementService } from '../../core/services/achievement.service';
 
 @Component({
     selector: 'app-add-product',
@@ -91,15 +90,16 @@ export class AddProduct {
     private createAnnouncement(payload: any) {
         this.announcementService.createAnnouncement(payload).subscribe({
             next: () => {
-                const currentUser = this.authService.currentUser();
-                if (currentUser && currentUser.id) {
-                    this.achievementService.assignAchievement(currentUser.id, 2).subscribe({
-                        error: (err) => console.error('Failed to assign achievement 2', err)
+                // Assign "Announcement Created" achievement (ID: 2)
+                const user = this.authService.currentUser();
+                if (user && user.id) {
+                    this.achievementService.assignAchievement(user.id, 2).subscribe({
+                        error: err => console.error('Failed to assign announcement achievement', err)
                     });
                 }
                 this.router.navigate(['/']);
             },
-            error: (err: any) => {
+            error: (err) => {
                 console.error('Error creating announcement', err);
                 alert('Failed to create announcement.');
             }

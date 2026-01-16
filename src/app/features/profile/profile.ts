@@ -140,10 +140,10 @@ export class Profile {
                     this.authService.currentUser.set(updatedUser);
                     this.isEditingBio.set(false);
 
-                    // Assign 'Profile Manager' achievement (ID: 3)
-                    if (user && user.id) {
+                    // Assign "Profile Manager" achievement (ID: 3)
+                    if (user.id) {
                         this.achievementService.assignAchievement(user.id, 3).subscribe({
-                            error: (err: any) => console.error('Failed to assign achievement 3', err)
+                            error: err => console.error('Failed to assign profile description achievement', err)
                         });
                     }
                 },

@@ -98,24 +98,6 @@
                 <span class="label">CATEGORY:</span> <span>{{ product.categoryName || 'Cat #' + product.categoryId
                     }}</span>
             </div>
-
-            <div class="data-row" style="border-bottom: none; margin-top: 1rem;">
-                @if (currentUser()) {
-                @if (showSellerPhone()) {
-                <span class="label">PHONE:</span> <span class="value">{{ sellerPhone() }}</span>
-                } @else {
-                @if (isPhoneLoading()) {
-                <button class="reveal-phone-btn" disabled style="cursor: wait; opacity: 0.7;">[ LOADING... ]</button>
-                } @else {
-                <button class="reveal-phone-btn" (click)="revealPhone()">[ REVEAL SELLER PHONE ]</button>
-                }
-                }
-                } @else {
-                <div style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">
-                    [ LOGIN TO VIEW CONTACT ]
-                </div>
-                }
-            </div>
         </div>
     </div>
 </aside>

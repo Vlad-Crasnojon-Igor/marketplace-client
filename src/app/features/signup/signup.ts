@@ -47,10 +47,10 @@ export class Signup {
       this.userService.createUser(userPayload).subscribe({
         next: (createdUser: User) => {
           this.authService.currentUser.set(createdUser);
-          // Assign 'Account Created' achievement (ID: 1)
+          // Assign "Account Created" achievement (ID: 1)
           if (createdUser.id) {
             this.achievementService.assignAchievement(createdUser.id, 1).subscribe({
-              error: (err) => console.error('Failed to assign achievement 1', err)
+              error: err => console.error('Failed to assign account creation achievement', err)
             });
           }
           this.router.navigate(['/']);
