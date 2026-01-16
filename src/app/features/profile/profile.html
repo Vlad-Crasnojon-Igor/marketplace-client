@@ -48,6 +48,21 @@
         }
     </div>
 
+    <div class="achievements-section">
+        <h2>Achievements</h2>
+        <div class="achievements-grid">
+            @for (ach of achievements(); track ach.achievementId) {
+            <div class="achievement-card">
+                <i [class]="getAchievementIcon(ach.achievementId)" class="icon"></i>
+                <div class="details">
+                    <h3>{{ ach.name }}</h3>
+                    <p>{{ ach.description }}</p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
     <div class="listings-section">
         <h2>Your Active Listings ({{ listings().length }})</h2>
 

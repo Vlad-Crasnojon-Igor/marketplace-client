@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { AnnouncementService } from '../../core/services/announcement.service';
 import { Announcement } from '../../core/models/announcement.model';
 import { CategoryService } from '../../core/services/category.service';
+import { UserService } from '../../core/services/user.service';
+import { AuthService } from '../../core/services/auth';
 import { Category } from '../../core/models/category.model';
 import { forkJoin, map } from 'rxjs';
 
@@ -21,11 +23,19 @@ interface CategoryWithCount extends Category {
 export class Home implements OnInit {
   private announcementService = inject(AnnouncementService);
   private categoryService = inject(CategoryService);
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
 
   searchQuery: string = '';
   isFilterOpen = false;
   currentFilter = 'Newest';
   selectedProduct = signal<Announcement | null>(null);
+
+  sellerPhone = signal<string | null>(null);
+  showSellerPhone = signal(false);
+  isPhoneLoading = signal(false);
+
+  currentUser = this.authService.currentUser;
 
   listings = signal<Announcement[]>([]);
   categoriesWithCounts = signal<CategoryWithCount[]>([]);
@@ -84,10 +94,35 @@ export class Home implements OnInit {
 
   openProduct(product: Announcement) {
     this.selectedProduct.set(product);
+    this.sellerPhone.set(null);
+    this.showSellerPhone.set(false);
+    this.isPhoneLoading.set(false);
   }
 
   closeProduct() {
     this.selectedProduct.set(null);
+    this.sellerPhone.set(null);
+    this.showSellerPhone.set(false);
+    this.isPhoneLoading.set(false);
+  }
+
+  revealPhone() {
+    const product = this.selectedProduct();
+    if (product && product.userId) {
+      this.isPhoneLoading.set(true);
+      this.userService.getUser(product.userId).subscribe({
+        next: (user) => {
+          this.sellerPhone.set(user.phoneNumber);
+          this.showSellerPhone.set(true);
+          this.isPhoneLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Failed to fetch seller phone', err);
+          alert('Could not retrieve contact info.');
+          this.isPhoneLoading.set(false);
+        }
+      });
+    }
   }
 
   applyFilter(type: string) {

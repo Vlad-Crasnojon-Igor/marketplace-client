@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { UserService, User } from '../../core/services/user.service';
 import { AuthService } from '../../core/services/auth';
+import { AchievementService } from '../../core/services/achievement.service';
 
 @Component({
   selector: 'app-signup',
@@ -15,6 +16,7 @@ export class Signup {
   private fb = inject(FormBuilder);
   private userService = inject(UserService);
   private authService = inject(AuthService);
+  private achievementService = inject(AchievementService);
   private router = inject(Router);
 
   loginForm: FormGroup = this.fb.group({
@@ -45,6 +47,12 @@ export class Signup {
       this.userService.createUser(userPayload).subscribe({
         next: (createdUser: User) => {
           this.authService.currentUser.set(createdUser);
+          // Assign 'Account Created' achievement (ID: 1)
+          if (createdUser.id) {
+            this.achievementService.assignAchievement(createdUser.id, 1).subscribe({
+              error: (err) => console.error('Failed to assign achievement 1', err)
+            });
+          }
           this.router.navigate(['/']);
         },
         error: (err) => {

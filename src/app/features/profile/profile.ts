@@ -6,6 +6,8 @@ import { UserService } from '../../core/services/user.service';
 
 import { AnnouncementService } from '../../core/services/announcement.service';
 import { Announcement } from '../../core/models/announcement.model';
+import { AchievementService } from '../../core/services/achievement.service';
+import { Achievement } from '../../core/models/achievement.model';
 
 @Component({
     selector: 'app-profile',
@@ -16,10 +18,12 @@ import { Announcement } from '../../core/models/announcement.model';
 export class Profile {
     private authService = inject(AuthService);
     private announcementService = inject(AnnouncementService);
+    private achievementService = inject(AchievementService); // Inject service
     private router = inject(Router);
     currentUser = this.authService.currentUser;
 
     listings = signal<Announcement[]>([]);
+    achievements = signal<Achievement[]>([]); // Update type
 
     // Delete Modal State
     showDeleteConfirm = signal(false);
@@ -48,6 +52,7 @@ export class Profile {
 
         if (user && user.id) {
             this.loadListings(user.id);
+            this.loadAchievements(user.id);
         }
     }
 
@@ -56,6 +61,22 @@ export class Profile {
             next: (data) => this.listings.set(data),
             error: (err) => console.error('Failed to load listings', err)
         });
+    }
+
+    loadAchievements(userId: number) {
+        this.achievementService.getUserAchievements(userId).subscribe({
+            next: (data) => this.achievements.set(data),
+            error: (err) => console.error('Failed to load achievements', err)
+        });
+    }
+
+    getAchievementIcon(id: number): string {
+        switch (id) {
+            case 1: return 'fa-solid fa-user-check';       // Created Account
+            case 2: return 'fa-solid fa-bullhorn';         // Created Announcement
+            case 3: return 'fa-solid fa-file-signature';   // Added Description
+            default: return 'fa-solid fa-trophy';          // Default
+        }
     }
 
     deleteListing(id: number) {
@@ -118,6 +139,13 @@ export class Profile {
 
                     this.authService.currentUser.set(updatedUser);
                     this.isEditingBio.set(false);
+
+                    // Assign 'Profile Manager' achievement (ID: 3)
+                    if (user && user.id) {
+                        this.achievementService.assignAchievement(user.id, 3).subscribe({
+                            error: (err: any) => console.error('Failed to assign achievement 3', err)
+                        });
+                    }
                 },
                 error: (err: any) => {
                     console.error('Error updating bio:', err);

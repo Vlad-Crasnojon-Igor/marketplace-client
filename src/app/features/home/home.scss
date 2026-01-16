@@ -338,6 +338,23 @@
         /* Yellow headers */
         font-weight: bold;
     }
+
+    .reveal-phone-btn {
+        background: transparent;
+        border: 1px solid var(--accent-primary);
+        color: var(--accent-primary);
+        padding: 0.5rem 1rem;
+        font-family: monospace;
+        font-weight: bold;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.2s;
+
+        &:hover {
+            background: var(--accent-primary);
+            color: var(--bg-base);
+        }
+    }
 }
 
 /* Responsive Home */
