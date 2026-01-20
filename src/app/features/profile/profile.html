@@ -50,20 +50,12 @@
 
     <div class="achievements-section">
         <h2>Achievements</h2>
-        <div class="achievements-grid">
-            <div class="achievement-card">
-                @if (ach.imageUrl) {
-                <img [src]="ach.imageUrl" [alt]="ach.name" class="achievement-img">
-                } @else {
-                <i class="fa-solid fa-trophy icon"></i>
-                }
-                <div class="details">
-                    <h3>{{ ach.name }}</h3>
-                    <p>{{ ach.description }}</p>
-                </div>
-            </div>
-            }
+        @for (ach of achievements(); track ach.achievementId) {
+        <div class="achievement-card">
+            <h3>{{ ach.name }}</h3>
+            <p>{{ ach.description }}</p>
         </div>
+        }
     </div>
 
     <div class="listings-section">
