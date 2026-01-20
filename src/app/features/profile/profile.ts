@@ -70,14 +70,7 @@ export class Profile {
         });
     }
 
-    getAchievementIcon(id: number): string {
-        switch (id) {
-            case 1: return 'fa-solid fa-user-check';       // Created Account
-            case 2: return 'fa-solid fa-bullhorn';         // Created Announcement
-            case 3: return 'fa-solid fa-file-signature';   // Added Description
-            default: return 'fa-solid fa-trophy';          // Default
-        }
-    }
+
 
     deleteListing(id: number) {
         this.listingToDelete.set(id);
